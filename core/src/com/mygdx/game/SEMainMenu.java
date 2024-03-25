@@ -25,7 +25,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
         //camera.setToOrtho(false,480,800);
 
         skin = new Skin(Gdx.files.internal("earthskin-ui/earthskin.json"));
-        stage = new Stage(new FitViewport(480,800,camera));
+        stage = new Stage(new FitViewport(450,854,camera));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -57,7 +57,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
     @Override
     public void render(float delta) {
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        //game.batch.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glClearColor(.9f, .9f, .9f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
