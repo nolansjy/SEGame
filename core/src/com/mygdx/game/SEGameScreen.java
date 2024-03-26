@@ -3,28 +3,17 @@ package com.mygdx.game;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-
-import java.util.HashMap;
 
 public class SEGameScreen implements Screen {
 	final SEMain game;
@@ -35,32 +24,39 @@ public class SEGameScreen implements Screen {
 	Vector3 touchPos;
 	TextureAtlas textureAtlas;
 	Texture background;
-	final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
+	private AssetManager assetManager;
+
 
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
-		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-		textureAtlas = new TextureAtlas(Gdx.files.internal("sprites.atlas"));
+		assetManager = game.getAssetManager();
+		rainMusic = assetManager.get("rain.mp3");
+		textureAtlas = assetManager.get("sprites.atlas");
 		background = new Texture(Gdx.files.internal("background.png"));
+
+		Sprites.load(textureAtlas);
 
 		rainMusic.setLooping(true);
 		rainMusic.play();
 
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 450, 854);
-		stage = new Stage(new FillViewport(450,854,camera));
 		batch = new SpriteBatch();
+		camera = new OrthographicCamera();
+		//camera.setToOrtho(false, 450, 854);
+		stage = new Stage(new FillViewport(450,854,camera));
+		Gdx.input.setInputProcessor(stage);
+		stage.addActor(new Bird("crow",20,20));
 
-		loadSprites();
 	}
 
-	private void drawSprite(String name, float x, float y) {
-		Sprite sprite = textureAtlas.createSprite(name);
-		sprite.setScale(2);
-		sprite.setPosition(x, y);
-		sprite.draw(batch);
-	}
+
+
+//	private void drawSprite(String name, float x, float y) {
+//		Sprite sprite = textureAtlas.createSprite(name);
+//		sprite.setScale(2);
+//		sprite.setPosition(x, y);
+//		sprite.draw(batch);
+//	}
 
 
 	@Override
@@ -72,19 +68,9 @@ public class SEGameScreen implements Screen {
 		stage.getBatch().draw(background,0,0,450,854);
 		stage.getBatch().end();
 		stage.draw();
-		batch.begin();
-		drawSprite("crow",650,400);
-		batch.end();
-	}
-
-
-	private void loadSprites() { // loads sprites from atlas
-		Array<TextureAtlas.AtlasRegion> regions = textureAtlas.getRegions();
-
-		for (TextureAtlas.AtlasRegion region : regions) {
-			Sprite sprite = textureAtlas.createSprite(region.name);
-			sprites.put(region.name, sprite);
-		}
+//		batch.begin();
+//		drawSprite("crow",650,400);
+//		batch.end();
 	}
 
 	@Override
@@ -113,7 +99,6 @@ public class SEGameScreen implements Screen {
 
 	@Override
 	public void dispose () {
-		sprites.clear();
 		textureAtlas.dispose();
 		rainMusic.dispose();
 		batch.dispose();
