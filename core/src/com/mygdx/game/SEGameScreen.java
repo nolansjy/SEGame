@@ -1,11 +1,19 @@
 package com.mygdx.game;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
@@ -29,6 +37,7 @@ public class SEGameScreen implements Screen {
 	Texture background;
 	final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
 
+
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
 		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
@@ -46,6 +55,14 @@ public class SEGameScreen implements Screen {
 		loadSprites();
 	}
 
+	private void drawSprite(String name, float x, float y) {
+		Sprite sprite = textureAtlas.createSprite(name);
+		sprite.setScale(2);
+		sprite.setPosition(x, y);
+		sprite.draw(batch);
+	}
+
+
 	@Override
 	public void render (float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -55,7 +72,9 @@ public class SEGameScreen implements Screen {
 		stage.getBatch().draw(background,0,0,450,854);
 		stage.getBatch().end();
 		stage.draw();
-
+		batch.begin();
+		drawSprite("crow",650,400);
+		batch.end();
 	}
 
 
@@ -98,6 +117,7 @@ public class SEGameScreen implements Screen {
 		textureAtlas.dispose();
 		rainMusic.dispose();
 		batch.dispose();
+		stage.dispose();
 	}
 
 
