@@ -3,6 +3,8 @@
 - Shop
 ## Zheng
 - Settings (look up libgdx Preferences)
+## Ray
+- Feeder
 
 # Programs
 [Libgdx TextureAtlas packer](https://github.com/crashinvaders/gdx-texture-packer-gui/releases)  
