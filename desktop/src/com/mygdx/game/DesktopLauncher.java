@@ -9,6 +9,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("se-game");
-		new Lwjgl3Application(new SEGameScreen(), config);
+		new Lwjgl3Application(new SEMain(), config);
 	}
 }
