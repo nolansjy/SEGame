@@ -14,6 +14,6 @@
 
 # Assets
 [Quill Icon](https://opengameart.org/content/32x32-feathers)  
-[Items](https://opengameart.org/content/free-game-items-pack-2)
-[Skin UI](https://github.com/czyzby/gdx-skins/tree/master/flat-earth)
-[Bird and Item Data](https://docs.google.com/spreadsheets/d/1wfBKz6L42ZmWmhs26Wi7kW-nk_lZXmaFOHxRovqRa6k/edit?usp=sharing)
+[Items](https://opengameart.org/content/free-game-items-pack-2)  
+[EarthSkin UI](https://github.com/czyzby/gdx-skins/tree/master/flat-earth)  
+[Bird and Item Data](https://docs.google.com/spreadsheets/d/1wfBKz6L42ZmWmhs26Wi7kW-nk_lZXmaFOHxRovqRa6k/edit?usp=sharing)  
