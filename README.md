@@ -5,7 +5,7 @@
 - Settings (look up libgdx Preferences)
 
 # Programs
-[Libgdx TextureAtlas packer](https://github.com/crashinvaders/gdx-texture-packer-gui/releases)
+[Libgdx TextureAtlas packer](https://github.com/crashinvaders/gdx-texture-packer-gui/releases)  
 [UI Skin composer](https://github.com/raeleus/skin-composer/wiki/Getting-Started-With-Windows)
 # Tutorials
 
