@@ -5,8 +5,8 @@
 - Settings (look up libgdx Preferences)
 
 # Tutorials
-https://www.gamedevelopment.blog/full-libgdx-game-tutorial-menu-control/
-https://github.com/raeleus/skin-composer/wiki/From-the-Ground-Up:-Scene2D.UI-Tutorials
+[Example of Scene2d game](https://github.com/TheInvader360/swipe-race-tutorial/tree/master/swipe-race-tutorial/src/com/theinvader360/scene2dtutorial/swiperace)
+
 
 # Possible Assets
 Quill Icon(https://opengameart.org/content/32x32-feathers
