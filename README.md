@@ -1,4 +1,9 @@
-(WIP)
+# TODO
+## Darwish
+- Shop
+## Zheng
+- Settings (look up libgdx Preferences)
+
 # Tutorials
 https://www.gamedevelopment.blog/full-libgdx-game-tutorial-menu-control/
 https://github.com/raeleus/skin-composer/wiki/From-the-Ground-Up:-Scene2D.UI-Tutorials
