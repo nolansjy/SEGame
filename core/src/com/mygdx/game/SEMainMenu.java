@@ -18,9 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import java.util.Map;
-
-
 public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
     private final Skin skin;
     private final Stage stage;
