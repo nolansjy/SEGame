@@ -258,10 +258,10 @@
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
 	"default": {
 		"up": "button-c",
-		"down": "button-p",
-		"over": "button-h"
+		"down": "button-p"
 	},
 	"close": {
+		"parent": "default",
 		"up": "button-close-c",
 		"down": "button-close-p",
 		"over": "button-close-h"
@@ -272,9 +272,7 @@
 		"checkboxOn": "checkbox-pressed-c",
 		"checkboxOff": "checkbox-c",
 		"font": "button",
-		"fontColor": "color",
-		"downFontColor": "pressed",
-		"overFontColor": "highlight"
+		"fontColor": "color"
 	},
 	"radio": {
 		"checkboxOn": "radio-pressed-c",
@@ -417,10 +415,9 @@
 		"font": "button",
 		"fontColor": "white",
 		"downFontColor": "white",
-		"overFontColor": "gray",
+		"overFontColor": "white",
 		"up": "button-c",
-		"down": "button-p",
-		"over": "button-h"
+		"down": "button-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -452,8 +449,8 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
-		"background": "window-w",
-		"titleFont": "font",
+		"background": "window-c",
+		"titleFont": "button",
 		"titleFontColor": "white"
 	}
 }
