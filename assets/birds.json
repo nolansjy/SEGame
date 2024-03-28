@@ -1,0 +1,55 @@
+[
+{
+  "id": 1,
+  "spriteName": "crow",
+  "x": 50,
+  "y": 50,
+  "type":0,
+  "name": "House Crow",
+  "species": "Corvus splendens",
+  "description": "The cawing urban scavenger.\\nOriginating from southern Asia, it is an invasive species in various countries, including Malaysia."
+},
+{
+  "id": 2,
+  "spriteName": "mynah",
+  "x": 100,
+  "y": 100,
+  "type":0,
+  "name": "Common Myna",
+  "species": "Acridotheres tristis",
+  "description": "A common sight, and often noisy.\\nIt occurs naturally in Malaysia, but is a highly invasive species in many regions such as Australia."
+}
+  ,
+{
+  "id": 3,
+  "spriteName": "sunbird",
+  "x": 150,
+  "y": 150,
+  "type":1,
+  "name": "Ornate Sunbird",
+  "species": "Cinnyris Ornatus",
+  "description": "Small but easy to spot by its distinctive blue-and-yellow colour.\\nFound among flowers. The female sunbird lacks the distinctive blue throat. "
+}
+  ,
+{
+  "id": 4,
+  "spriteName": "oriole",
+  "x": 200,
+  "y": 200,
+  "type":2,
+  "name": "Black-naped Oriole",
+  "species": "Oriolus chinensis",
+  "description": "Highly visible yellow bird.\\nVery widespread with 20 different subspecies. Has a distinctive dipping flight pattern."
+}
+  ,
+{
+  "id": 5,
+  "spriteName": "spritename",
+  "x": 250,
+  "y": 250,
+  "type":3,
+  "name": "White-throated Kingfisher",
+  "species": "Halcyon smyrnensis",
+  "description": "A tree kingfisher commonly found away from water.\\nVivid red bill and bright blue wings makes it highly distinct."
+}
+]
