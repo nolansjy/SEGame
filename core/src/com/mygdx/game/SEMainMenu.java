@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -17,19 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
-    private Skin skin;
-    private Stage stage;
-    private AssetManager assetManager;
+    private final Skin skin;
+    private final Stage stage;
     final SEMain game;
     OrthographicCamera camera;
     public SEMainMenu(final SEMain game){ // used in place of create() method
         this.game = game;
         camera = new OrthographicCamera();
-        assetManager = game.getAssetManager();
+        AssetManager assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
         stage = new Stage(new FitViewport(450,854,camera));
         Gdx.input.setInputProcessor(stage);

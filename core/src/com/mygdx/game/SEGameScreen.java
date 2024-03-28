@@ -1,13 +1,11 @@
 package com.mygdx.game;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -21,16 +19,13 @@ public class SEGameScreen implements Screen {
 	OrthographicCamera camera;
 	Stage stage;
 	SpriteBatch batch;
-	Vector3 touchPos;
 	TextureAtlas textureAtlas;
 	Texture background;
-	private AssetManager assetManager;
-
 
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
-		assetManager = game.getAssetManager();
+		AssetManager assetManager = game.getAssetManager();
 		rainMusic = assetManager.get("rain.mp3");
 		textureAtlas = assetManager.get("sprites.atlas");
 		background = new Texture(Gdx.files.internal("background.png"));
@@ -42,21 +37,12 @@ public class SEGameScreen implements Screen {
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		//camera.setToOrtho(false, 450, 854);
 		stage = new Stage(new FillViewport(450,854,camera));
 		Gdx.input.setInputProcessor(stage);
-		stage.addActor(new Bird("crow",20,20));
+		//TODO: method to randomly spawn birds
+		stage.addActor(new Bird(2));
 
 	}
-
-
-
-//	private void drawSprite(String name, float x, float y) {
-//		Sprite sprite = textureAtlas.createSprite(name);
-//		sprite.setScale(2);
-//		sprite.setPosition(x, y);
-//		sprite.draw(batch);
-//	}
 
 
 	@Override
@@ -68,9 +54,6 @@ public class SEGameScreen implements Screen {
 		stage.getBatch().draw(background,0,0,450,854);
 		stage.getBatch().end();
 		stage.draw();
-//		batch.begin();
-//		drawSprite("crow",650,400);
-//		batch.end();
 	}
 
 	@Override
@@ -102,6 +85,7 @@ public class SEGameScreen implements Screen {
 		textureAtlas.dispose();
 		rainMusic.dispose();
 		batch.dispose();
+		Sprites.dispose();
 		stage.dispose();
 	}
 

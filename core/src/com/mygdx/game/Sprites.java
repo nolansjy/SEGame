@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.HashMap;
 
 public class Sprites {
-    public static HashMap<String, TextureRegion> images = new HashMap<String, TextureRegion>();
+    public static HashMap<String, TextureRegion> images = new HashMap<>();
 
     public static void load(TextureAtlas textureAtlas) { // loads sprites from atlas
         Array<TextureAtlas.AtlasRegion> regions = textureAtlas.getRegions();
