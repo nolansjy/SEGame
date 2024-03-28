@@ -2,20 +2,48 @@ package com.mygdx.game;
 
 import static com.badlogic.gdx.scenes.scene2d.Touchable.enabled;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
 
 public class Bird extends Actor {
+    int id;
+    String spriteName;
+    float x;
+    float y;
+    int type;
+    String name;
+    String species;
+    String desc;
     TextureRegion birdImg;
-    public Bird(String name, float x, float y){
+
+    public Bird(int birdId){
+        FileHandle birddata = Gdx.files.internal("birds.json");
+        FileHandle userdata = Gdx.files.local("user.json");
+
+        JsonReader jsonRead = new JsonReader();
+        JsonValue birdjson = jsonRead.parse(birddata);
+        JsonValue bird = getBirdData(birdjson,birdId);
+        type = bird.getInt("type");
+        spriteName = bird.getString("spriteName");
+        name = bird.getString("name");
+        species = bird.getString("species");
+        desc = bird.getString("description");
+        x = bird.getFloat("x");
+        y = bird.getFloat("y");
+
         HashMap<String, TextureRegion> images = Sprites.getImages();
-        birdImg = images.get(name);
+        birdImg = images.get(spriteName);
         setWidth(birdImg.getRegionWidth());
         setHeight(birdImg.getRegionHeight());
         setX(x);
@@ -25,11 +53,21 @@ public class Bird extends Actor {
 
         addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                // TODO: add quills
                 addAction(Actions.removeActor());
+                Json json = new Json();
+                User user = userdata.exists()? json.fromJson(User.class, userdata) : new User();
+                if (!user.birdsFound.contains(birdId,true)){
+                    // TODO: add popup for new bird found
+                    user.birdsFound.add(birdId);
+                    User.save(user);
+                    User.check();
+                }
                 return true;
             }
         });
     }
+
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(birdImg, getX(), getY(), getOriginX(), getOriginY(),
@@ -39,5 +77,17 @@ public class Bird extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+    }
+
+    private JsonValue getBirdData(JsonValue jsonValue, int id){
+        JsonValue data = null;
+        for(JsonValue value : jsonValue){
+            int i = value.getInt("id");
+            if(i==id){
+                data = value;
+                break;
+            }
+        }
+        return data;
     }
 }
