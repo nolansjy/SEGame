@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +23,8 @@ public class SEGameScreen implements Screen {
 	TextureAtlas textureAtlas;
 	Texture background;
 
+	private AssetManager assetManager;
+	private Preferences pref;
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
@@ -31,9 +34,12 @@ public class SEGameScreen implements Screen {
 		background = new Texture(Gdx.files.internal("background.png"));
 
 		Sprites.load(textureAtlas);
+		pref = Gdx.app.getPreferences("gamePrefs");
 
 		rainMusic.setLooping(true);
+		//rainMusic.setVolume(SEMainMenu.master_vol/100);
 		rainMusic.play();
+		rainMusic.setVolume(pref.getFloat("master_vol")/100);
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
