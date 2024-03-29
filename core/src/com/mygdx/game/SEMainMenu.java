@@ -26,10 +26,11 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
     public static float master_vol;
     public static boolean skip_menu;
     public Preferences prefs;
+    AssetManager assetManager;
     public SEMainMenu(final SEMain game){ // used in place of create() method
         this.game = game;
         camera = new OrthographicCamera();
-        AssetManager assetManager = game.getAssetManager();
+        assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
         stage = new Stage(new FitViewport(450,854,camera));
         Gdx.input.setInputProcessor(stage);
@@ -124,7 +125,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
 
     @Override
     public void dispose() {
-        skin.dispose();
+        assetManager.clear();
         stage.dispose();
 
     }
