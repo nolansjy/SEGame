@@ -33,9 +33,9 @@
 		"a": 1
 	},
 	"gray": {
-		"r": 0.5,
-		"g": 0.5,
-		"b": 0.5,
+		"r": 0.6392157,
+		"g": 0.6392157,
+		"b": 0.6392157,
 		"a": 1
 	},
 	"highlight": {
@@ -253,6 +253,14 @@
 	"radio-pressed-p": {
 		"name": "radio-pressed",
 		"color": "pressed"
+	},
+	"book-p": {
+		"name": "book",
+		"color": "gray"
+	},
+	"backpack-p": {
+		"name": "backpack",
+		"color": "gray"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
@@ -265,6 +273,24 @@
 		"up": "button-close-c",
 		"down": "button-close-p",
 		"over": "button-close-h"
+	},
+	"shop": {
+		"up": "shop_u",
+		"down": "shop_p",
+		"over": "shop_o"
+	},
+	"home": {
+		"up": "home_u",
+		"down": "home_p",
+		"over": "home_o"
+	},
+	"bag": {
+		"up": "backpack",
+		"down": "backpack-p"
+	},
+	"book": {
+		"up": "book",
+		"down": "book-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
@@ -284,8 +310,7 @@
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
 	"default": {
 		"up": "button-c",
-		"down": "button-p",
-		"over": "button-h"
+		"down": "button-p"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
