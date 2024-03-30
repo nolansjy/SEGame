@@ -54,4 +54,15 @@ public class User {
         userfile.writeString(json.prettyPrint(txt),false);
     }
 
+    public static Integer getQuills(){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.quills;
+    }
+
+    public static void addQuills(int value){
+        User user = json.fromJson(User.class, getUserfile());
+        user.quills += value;
+        save(user);
+    }
+
 }

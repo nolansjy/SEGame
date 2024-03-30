@@ -4,6 +4,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,7 +34,8 @@ public class SEGameScreen implements Screen {
 	Skin skin;
 	AssetManager assetManager;
 	Preferences prefs;
-
+	Integer q;
+	Label quillNum;
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
@@ -62,7 +64,9 @@ public class SEGameScreen implements Screen {
 	public void show(){
 		rainMusic.play();
 		//TODO: method to randomly spawn birds
-		stage.addActor(new Bird(2));
+		for(int i = 1; i < 6; i++){
+			stage.addActor(new Bird(i));
+		}
 
 		Table gardenUi = new Table();
 		gardenUi.padRight(35.0f);
@@ -93,9 +97,8 @@ public class SEGameScreen implements Screen {
 		Image quill = new Image(skin, "quill");
 		quills.add(quill).padRight(10.0f);
 
-		Integer q = 1000;
-
-		Label quillNum = new Label(String.valueOf(q), skin, "button");
+		q = User.getQuills();
+		quillNum = new Label(String.valueOf(q), skin, "button");
 		quillNum.setColor(skin.getColor("window"));
 		quills.add(quillNum);
 
@@ -115,9 +118,12 @@ public class SEGameScreen implements Screen {
 
 	@Override
 	public void render (float delta) {
+		delta = Gdx.graphics.getDeltaTime();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
-		stage.act();
+		q=User.getQuills();
+		quillNum.setText(String.valueOf(q));
+		stage.act(delta);
 		stage.getBatch().begin();
 		stage.getBatch().draw(background,0,0,450,854);
 		stage.getBatch().end();
