@@ -261,6 +261,10 @@
 	"backpack-p": {
 		"name": "backpack",
 		"color": "gray"
+	},
+	"basket_p": {
+		"name": "basket_u",
+		"color": "gray"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
@@ -275,9 +279,8 @@
 		"over": "button-close-h"
 	},
 	"shop": {
-		"up": "shop_u",
-		"down": "shop_p",
-		"over": "shop_o"
+		"up": "basket_u",
+		"down": "basket_p"
 	},
 	"home": {
 		"up": "home_u",

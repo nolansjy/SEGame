@@ -6,7 +6,7 @@ filter: Linear, Linear
 repeat: none
 button
   rotate: false
-  xy: 335, 218
+  xy: 85, 9
   size: 56, 42
   split: 18, 18, 0, 0
   pad: 13, 14, 3, 2
@@ -15,14 +15,14 @@ button
   index: -1
 button-close
   rotate: false
-  xy: 286, 170
+  xy: 218, 53
   size: 24, 24
   orig: 24, 24
   offset: 0, 0
   index: -1
 button-pressed
   rotate: false
-  xy: 393, 218
+  xy: 157, 13
   size: 56, 42
   split: 18, 18, 0, 0
   pad: 13, 14, 3, 2
@@ -31,14 +31,14 @@ button-pressed
   index: -1
 checkbox
   rotate: false
-  xy: 255, 170
+  xy: 223, 131
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
   index: -1
 checkbox-pressed
   rotate: false
-  xy: 223, 106
+  xy: 223, 105
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
@@ -73,7 +73,7 @@ font-title-export
   index: -1
 list
   rotate: false
-  xy: 451, 221
+  xy: 223, 311
   size: 39, 39
   split: 1, 1, 1, 1
   pad: 2, 2, 2, 2
@@ -82,7 +82,7 @@ list
   index: -1
 radio-pressed
   rotate: false
-  xy: 255, 144
+  xy: 218, 79
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
@@ -96,7 +96,7 @@ scrollbar
   index: -1
 scrollbar-android
   rotate: false
-  xy: 1, 1
+  xy: 259, 482
   size: 3, 3
   orig: 3, 3
   offset: 0, 0
@@ -112,7 +112,7 @@ select-box
   index: -1
 select-box-pressed
   rotate: false
-  xy: 335, 196
+  xy: 223, 289
   size: 39, 20
   split: 4, 15, 4, 4
   pad: 2, 16, 2, 2
@@ -135,7 +135,7 @@ slider-fancy-knob
   index: -1
 slider-horizontal
   rotate: false
-  xy: 85, 6
+  xy: 215, 1
   size: 17, 11
   split: 4, 4, 0, 0
   pad: 0, 0, 0, 0
@@ -144,14 +144,14 @@ slider-horizontal
   index: -1
 slider-knob
   rotate: false
-  xy: 492, 242
+  xy: 242, 269
   size: 18, 18
   orig: 18, 18
   offset: 0, 0
   index: -1
 slider-vertical
   rotate: false
-  xy: 223, 87
+  xy: 143, 34
   size: 11, 17
   split: 0, 0, 4, 4
   pad: 0, 0, 0, 0
@@ -178,7 +178,7 @@ splitpane-vertical
   index: -1
 textfield
   rotate: false
-  xy: 223, 164
+  xy: 208, 189
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 4, 4, 1, 1
@@ -203,28 +203,28 @@ touchpad
   index: -1
 touchpad-knob
   rotate: false
-  xy: 223, 132
+  xy: 223, 157
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 tree-minus
   rotate: false
-  xy: 222, 333
+  xy: 215, 34
   size: 22, 17
   orig: 22, 17
   offset: 0, 0
   index: -1
 tree-plus
   rotate: false
-  xy: 376, 198
+  xy: 215, 14
   size: 21, 18
   orig: 21, 18
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 142, 180
+  xy: 215, 54
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -240,9 +240,16 @@ window
   index: -1
 backpack
   rotate: false
-  xy: 274, 196
+  xy: 157, 57
   size: 59, 64
   orig: 59, 64
+  offset: 0, 0
+  index: -1
+basket_u
+  rotate: false
+  xy: 91, 53
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 book
@@ -254,7 +261,7 @@ book
   index: -1
 coin
   rotate: false
-  xy: 85, 19
+  xy: 208, 255
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -282,29 +289,8 @@ home_u
   index: -1
 quill
   rotate: false
-  xy: 119, 19
+  xy: 208, 221
   size: 32, 32
   orig: 32, 32
-  offset: 0, 0
-  index: -1
-shop_o
-  rotate: false
-  xy: 91, 53
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-shop_p
-  rotate: false
-  xy: 157, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-shop_u
-  rotate: false
-  xy: 208, 196
-  size: 64, 64
-  orig: 64, 64
   offset: 0, 0
   index: -1
