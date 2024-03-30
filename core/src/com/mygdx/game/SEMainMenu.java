@@ -54,6 +54,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
 
         Slider volume = new Slider(0,100,10,false,skin);
         CheckBox disableStart = new CheckBox("Disable start menu",skin);
+        disableStart.getLabel().setColor(skin.getColor("black"));
         Button close = new Button(skin,"close");
         volume.setValue(prefs.getFloat("master_vol"));
 
@@ -72,10 +73,10 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
                 Dialog settingsPopup = new Dialog("Settings",skin);
                 //settingsPopup.button(close);
                 //settingsPopup.setDebug(true);
+                settingsPopup.button(close);
                 settingsPopup.getContentTable().add(volume);
                 settingsPopup.getButtonTable().add(disableStart);
                 //settingsPopup.add(String.valueOf(prefs.getFloat("master_vol")));
-                settingsPopup.button(close);
                 settingsPopup.pad(40,20,10,20);
                 settingsPopup.show(stage);
             }
