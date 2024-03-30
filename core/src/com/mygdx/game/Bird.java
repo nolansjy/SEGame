@@ -29,7 +29,7 @@ public class Bird extends Actor {
 
     public Bird(int birdId){
         FileHandle birddata = Gdx.files.internal("birds.json");
-        FileHandle userdata = Gdx.files.local("user.json");
+        FileHandle userdata = User.getUserfile();
 
         JsonReader jsonRead = new JsonReader();
         JsonValue birdjson = jsonRead.parse(birddata);
@@ -55,14 +55,8 @@ public class Bird extends Actor {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 // TODO: add quills
                 addAction(Actions.removeActor());
-                Json json = new Json();
-                User user = userdata.exists()? json.fromJson(User.class, userdata) : new User();
-                if (!user.birdsFound.contains(birdId,true)){
-                    // TODO: add popup for new bird found
-                    user.birdsFound.add(birdId);
-                    User.save(user);
-                    User.check();
-                }
+                User.addQuills(10);
+                User.check();
                 return true;
             }
         });
