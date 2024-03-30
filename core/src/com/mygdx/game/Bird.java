@@ -1,18 +1,33 @@
 package com.mygdx.game;
 
 import static com.badlogic.gdx.scenes.scene2d.Touchable.enabled;
+import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -26,10 +41,11 @@ public class Bird extends Actor {
     String species;
     String desc;
     TextureRegion birdImg;
+    Skin skin;
 
     public Bird(int birdId){
         FileHandle birddata = Gdx.files.internal("birds.json");
-        FileHandle userdata = User.getUserfile();
+        skin = new Skin(Gdx.files.internal("earthskin-ui/earthskin.json"));
 
         JsonReader jsonRead = new JsonReader();
         JsonValue birdjson = jsonRead.parse(birddata);
@@ -53,14 +69,18 @@ public class Bird extends Actor {
 
         addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                // TODO: add quills
+                // TODO: found/not found
                 addAction(Actions.removeActor());
                 User.addQuills(10);
-                User.check();
+                if (!User.isBirdFound(birdId)){
+                    Stage stage = getStage();
+                    stage.addActor(getBirdFound(birdId));
+                }
                 return true;
             }
         });
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha){
@@ -84,4 +104,45 @@ public class Bird extends Actor {
         }
         return data;
     }
+
+    private Dialog getBirdFound(int birdId){
+        Bird bird = new Bird(birdId);
+        Table birdInfo = new Table();
+        birdInfo.setFillParent(true);
+
+        birdInfo.row();
+        Label birdName = new Label(bird.name, skin,"button");
+        birdName.setColor(skin.getColor("black"));
+        birdInfo.add(birdName).expandX().padBottom(10.0f).align(Align.center);
+
+        birdInfo.row();
+        Image birdImg = new Image(bird.birdImg);
+        birdInfo.add(birdImg);
+
+        birdInfo.row();
+        Label speciesName = new Label(bird.species, skin,"button");
+        speciesName.setColor(skin.getColor("black"));
+        birdInfo.add(speciesName).expandX().padTop(10.0f).align(Align.center);
+
+        TextButton close = new TextButton("Close",skin);
+
+        Dialog birdFound = new Dialog("Bird Found!",skin){
+            @Override
+            protected void result(Object object){
+                if((Boolean)object){
+                    remove();
+                }
+            }
+        };
+
+        birdFound.setKeepWithinStage(true);
+        birdFound.getContentTable().add(birdInfo).pad(50,0,0,100);
+        birdFound.button("Return",true);
+        birdFound.setWidth(getStage().getWidth()-150);
+        birdFound.setHeight(getStage().getHeight()/3);
+        birdFound.setPosition(75,100);
+
+        return birdFound;
+    }
+
 }

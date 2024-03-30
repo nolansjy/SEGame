@@ -52,6 +52,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
         menu.row().pad(10, 0, 10, 0);
         menu.add(settings).fillX().uniformX();
 
+
         Slider volume = new Slider(0,100,10,false,skin);
         CheckBox disableStart = new CheckBox("Disable start menu",skin);
         disableStart.getLabel().setColor(skin.getColor("black"));

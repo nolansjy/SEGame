@@ -65,4 +65,9 @@ public class User {
         save(user);
     }
 
+    public static boolean isBirdFound(int birdId){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.birdsFound.contains(birdId,true);
+    }
+
 }

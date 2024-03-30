@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class SEMain extends Game{
     SkinLoader.SkinParameter skinParameter;
-    private AssetManager assetManager;
+    public AssetManager assetManager;
 
     public void create(){
         assetManager = new AssetManager();
