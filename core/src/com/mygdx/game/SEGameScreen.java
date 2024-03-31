@@ -67,7 +67,6 @@ public class SEGameScreen implements Screen {
 	public void show(){
 		rainMusic.play();
 		//TODO: method to randomly spawn birds
-		stage.addActor(new Bird(1));
 		for(int i = 1; i < 6; i++){
 			stage.addActor(new Bird(i));
 		}

@@ -70,13 +70,13 @@ public class Bird extends Actor {
 
         addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                addAction(Actions.removeActor());
                 User.addQuills(10);
                 if (!User.isBirdFound(birdId)){
                     Stage stage = getStage();
                     stage.addActor(getBirdFound(birdId));
                     User.addBird(birdId);
                 }
+                addAction(Actions.removeActor());
                 return true;
             }
         });
