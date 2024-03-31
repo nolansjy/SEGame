@@ -21,7 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SEGameScreen implements Screen {
 	final SEMain game;
@@ -36,6 +38,7 @@ public class SEGameScreen implements Screen {
 	Preferences prefs;
 	Integer q;
 	Label quillNum;
+	Table gardenUi;
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
@@ -51,8 +54,8 @@ public class SEGameScreen implements Screen {
 		rainMusic.setVolume(pref.getFloat("master_vol")/100);
 
 		batch = new SpriteBatch();
-		camera = new OrthographicCamera();
-		stage = new Stage(new FillViewport(450,854,camera));
+		//camera = new OrthographicCamera();
+		stage = new Stage(new FillViewport(450,854));
 		Gdx.input.setInputProcessor(stage);
 
 		prefs = Gdx.app.getPreferences("gamePrefs");
@@ -64,11 +67,12 @@ public class SEGameScreen implements Screen {
 	public void show(){
 		rainMusic.play();
 		//TODO: method to randomly spawn birds
+		stage.addActor(new Bird(1));
 		for(int i = 1; i < 6; i++){
 			stage.addActor(new Bird(i));
 		}
 
-		Table gardenUi = new Table();
+		gardenUi = new Table();
 		gardenUi.padRight(35.0f);
 		gardenUi.padBottom(15.0f);
 		gardenUi.align(Align.bottomRight);
@@ -113,14 +117,21 @@ public class SEGameScreen implements Screen {
 				game.setScreen(new SEMainMenu(game));
 			}
 		});
+
+		book.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(new BirdList(game));
+			}
+		});
 	}
 
 
 	@Override
 	public void render (float delta) {
 		delta = Gdx.graphics.getDeltaTime();
+		Gdx.gl.glClearColor(0.9f, 0.9f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		camera.update();
 		q=User.getQuills();
 		quillNum.setText(String.valueOf(q));
 		stage.act(delta);
@@ -153,7 +164,7 @@ public class SEGameScreen implements Screen {
 		assetManager.clear();
 		batch.dispose();
 		Sprites.dispose();
-		stage.dispose();
+		stage.clear();
 	}
 
 

@@ -48,9 +48,13 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
 
         TextButton playGame = new TextButton("Play Game", skin);
         TextButton settings = new TextButton("Settings",skin);
+        TextButton reset = new TextButton("Reset",skin);
         menu.add(playGame).fillX().uniformX();
         menu.row().pad(10, 0, 10, 0);
         menu.add(settings).fillX().uniformX();
+        menu.row().pad(10, 0, 10, 0);
+        menu.add(reset).fillX().uniformX();
+
 
 
         Slider volume = new Slider(0,100,10,false,skin);
@@ -80,6 +84,13 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
                 //settingsPopup.add(String.valueOf(prefs.getFloat("master_vol")));
                 settingsPopup.pad(40,20,10,20);
                 settingsPopup.show(stage);
+            }
+        });
+
+        reset.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                User.init();
             }
         });
 
