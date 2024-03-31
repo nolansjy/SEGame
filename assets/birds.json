@@ -7,7 +7,7 @@
   "type":0,
   "name": "House Crow",
   "species": "Corvus splendens",
-  "description": "The cawing urban scavenger.\\nOriginating from southern Asia, it is an invasive species in various countries, including Malaysia."
+  "description": "The cawing urban scavenger. Originating from southern Asia, it is an invasive species in various countries, including Malaysia."
 },
 {
   "id": 2,
@@ -17,7 +17,7 @@
   "type":0,
   "name": "Common Myna",
   "species": "Acridotheres tristis",
-  "description": "A common sight, and often noisy.\\nIt occurs naturally in Malaysia, but is a highly invasive species in many regions such as Australia."
+  "description": "A common sight, and often noisy.It occurs naturally in Malaysia, but is a highly invasive species in many regions such as Australia."
 }
   ,
 {
@@ -27,8 +27,8 @@
   "y": 60,
   "type":1,
   "name": "Ornate Sunbird",
-  "species": "Cinnyris Ornatus",
-  "description": "Small but easy to spot by its distinctive blue-and-yellow colour.\\nFound among flowers. The female sunbird lacks the distinctive blue throat. "
+  "species": "Cinnyris ornatus",
+  "description": "Small but easy to spot by its distinctive blue-and-yellow colour. Found among flowers. The female sunbird lacks the distinctive blue throat. "
 }
   ,
 {
@@ -39,7 +39,7 @@
   "type":2,
   "name": "Black-naped Oriole",
   "species": "Oriolus chinensis",
-  "description": "Highly visible yellow bird.\\nVery widespread with 20 different subspecies. Has a distinctive dipping flight pattern."
+  "description": "Highly visible yellow bird. Very widespread with 20 different subspecies. Has a distinctive dipping flight pattern."
 }
   ,
 {
@@ -50,6 +50,6 @@
   "type":3,
   "name": "White-throated Kingfisher",
   "species": "Halcyon smyrnensis",
-  "description": "A tree kingfisher commonly found away from water.\\nVivid red bill and bright blue wings makes it highly distinct."
+  "description": "A tree kingfisher commonly found away from water.Vivid red bill and bright blue wings makes it highly distinct."
 }
 ]
