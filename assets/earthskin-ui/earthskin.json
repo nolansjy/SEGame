@@ -17,6 +17,12 @@
 		"scaledSize": -1,
 		"markupEnabled": false,
 		"flip": false
+	},
+	"pixel": {
+		"file": "VT323-Regular.fnt",
+		"scaledSize": -1,
+		"markupEnabled": false,
+		"flip": false
 	}
 },
 "com.badlogic.gdx.graphics.Color": {
@@ -274,9 +280,8 @@
 	},
 	"close": {
 		"parent": "default",
-		"up": "button-close-c",
-		"down": "button-close-p",
-		"over": "button-close-h"
+		"up": "button-close-h",
+		"down": "button-close-p"
 	},
 	"shop": {
 		"up": "basket_u",
@@ -318,13 +323,12 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
 	"default": {
-		"font": "button",
-		"fontColor": "white",
-		"downFontColor": "white",
-		"overFontColor": "gray",
-		"up": "button-c",
-		"down": "button-p",
-		"over": "button-h"
+		"font": "pixel",
+		"fontColor": "pressed",
+		"disabledFontColor": "black",
+		"up": "button-h",
+		"down": "button-c",
+		"disabled": "button-pressed-c"
 	},
 	"check": {
 		"imageUp": "checkbox-c",
@@ -352,15 +356,25 @@
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 	"default": {
 		"font": "font",
-		"fontColor": "color"
+		"fontColor": "black"
 	},
 	"button": {
 		"font": "button",
-		"fontColor": "color"
+		"fontColor": "black"
 	},
 	"title": {
 		"font": "title",
-		"fontColor": "color"
+		"fontColor": "black"
+	},
+	"tag": {
+		"font": "button",
+		"fontColor": "window",
+		"background": "button-h"
+	},
+	"inset": {
+		"font": "pixel",
+		"fontColor": "window",
+		"background": "button-h"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
@@ -477,7 +491,7 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
-		"background": "window-w",
+		"background": "window-c",
 		"titleFont": "button",
 		"titleFontColor": "white"
 	}
