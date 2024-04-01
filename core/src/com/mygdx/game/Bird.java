@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import org.w3c.dom.Text;
 
@@ -44,7 +45,7 @@ public class Bird extends Actor {
     TextureRegion birdImg;
     Skin skin;
 
-    public Bird(int birdId){
+    public Bird(Integer birdId){
         FileHandle birddata = Gdx.files.internal("birds.json");
         skin = new Skin(Gdx.files.internal("earthskin-ui/earthskin.json"));
 
@@ -142,6 +143,10 @@ public class Bird extends Actor {
         return birdFound;
     }
 
-
+    public static boolean isSpawnTime(){
+        long startTime = User.getStartTime();
+        long elapsedTime = TimeUtils.timeSinceMillis(startTime);
+        return elapsedTime == 5000;
+    }
 
 }

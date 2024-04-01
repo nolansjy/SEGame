@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
@@ -21,9 +22,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.util.HashMap;
 
 public class SEGameScreen implements Screen {
 	final SEMain game;
@@ -39,7 +44,11 @@ public class SEGameScreen implements Screen {
 	Integer q;
 	Label quillNum;
 	Table gardenUi;
-
+	Table quills;
+	TextureRegion feeder;
+	long startTime;
+	long elapsedTime;
+	Array<Integer> birdPool;
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
 		assetManager = game.getAssetManager();
@@ -54,22 +63,22 @@ public class SEGameScreen implements Screen {
 		rainMusic.setVolume(pref.getFloat("master_vol")/100);
 
 		batch = new SpriteBatch();
-		//camera = new OrthographicCamera();
 		stage = new Stage(new FillViewport(450,854));
 		Gdx.input.setInputProcessor(stage);
 
 		prefs = Gdx.app.getPreferences("gamePrefs");
 
 		Sprites.load(textureAtlas);
+		feeder = textureAtlas.findRegion("feeder_empty");
+
+		birdPool = new Array<>();
+		birdPool.addAll(1, 2, 3, 4, 5);
 	}
 
 	@Override
 	public void show(){
 		rainMusic.play();
 		//TODO: method to randomly spawn birds
-		for(int i = 1; i < 6; i++){
-			stage.addActor(new Bird(i));
-		}
 
 		gardenUi = new Table();
 		gardenUi.padRight(35.0f);
@@ -91,7 +100,7 @@ public class SEGameScreen implements Screen {
 
 		stage.addActor(gardenUi);
 
-		Table quills = new Table();
+		quills = new Table();
 		quills.padLeft(35.0f);
 		quills.padTop(15.0f);
 		quills.align(Align.topLeft);
@@ -106,7 +115,6 @@ public class SEGameScreen implements Screen {
 		quills.add(quillNum);
 
 		stage.addActor(quills);
-
 
 		home.addListener(new ChangeListener() {
 			@Override
@@ -133,9 +141,18 @@ public class SEGameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		q=User.getQuills();
 		quillNum.setText(String.valueOf(q));
+		startTime = User.getStartTime(); // in milliseconds
+		elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000; // in seconds
+		if(elapsedTime==10 && birdPool.size > 0){ // 10 seconds
+			Integer birdId = birdPool.random();
+			stage.addActor(new Bird(birdId));
+			birdPool.removeValue(birdId,true);
+			User.saveStartTime();
+		}
 		stage.act(delta);
 		stage.getBatch().begin();
 		stage.getBatch().draw(background,0,0,450,854);
+		stage.getBatch().draw(feeder,stage.getWidth()/3,125,feeder.getRegionWidth(),feeder.getRegionHeight());
 		stage.getBatch().end();
 		stage.draw();
 	}

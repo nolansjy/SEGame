@@ -7,6 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class User {
     public Array<Integer> itemsPlaced;
     public HashMap<Integer,Integer> feed;
     public Integer quills;
+    public long startTime;
 
     public static FileHandle getUserfile(){
         return Gdx.files.local("user.json");
@@ -49,6 +51,7 @@ public class User {
         user.itemsPlaced.add(0);
         user.feed.put(0,0);
         user.quills = 0;
+        user.startTime = TimeUtils.millis();
 
         String txt = json.toJson(user);
         userfile.writeString(json.prettyPrint(txt),false);
@@ -74,6 +77,17 @@ public class User {
     public static boolean isBirdFound(int birdId){
         User user = json.fromJson(User.class, getUserfile());
         return user.birdsFound.contains(birdId,true);
+    }
+
+    public static void saveStartTime(){
+        User user = json.fromJson(User.class, getUserfile());
+        user.startTime = TimeUtils.millis();
+        save(user);
+    }
+
+    public static long getStartTime(){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.startTime;
     }
 
 }
