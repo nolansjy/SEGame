@@ -131,6 +131,13 @@ public class SEGameScreen implements Screen {
 				game.setScreen(new BirdList(game));
 			}
 		});
+
+		shop.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				game.setScreen(new Shop(game));
+			}
+		});
 	}
 
 
