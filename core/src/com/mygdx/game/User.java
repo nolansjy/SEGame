@@ -9,13 +9,11 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import java.util.HashMap;
-
 public class User {
     public Array<Integer> birdsFound;
     public Array<Integer> itemsBought;
     public Array<Integer> itemsPlaced;
-    public HashMap<Integer,Integer> feed;
+    public Array<Integer> feed;
     public Integer quills;
     public long startTime;
 
@@ -44,12 +42,12 @@ public class User {
         user.birdsFound = new Array<>();
         user.itemsBought = new Array<>();
         user.itemsPlaced = new Array<>();
-        user.feed = new HashMap<>();
+        user.feed = new Array<>();
 
         user.birdsFound.add(0);
         user.itemsBought.add(0);
         user.itemsPlaced.add(0);
-        user.feed.put(0,0);
+        user.feed.addAll(0,0,0,0,0);
         user.quills = 0;
         user.startTime = TimeUtils.millis();
 
@@ -66,6 +64,36 @@ public class User {
         User user = json.fromJson(User.class, getUserfile());
         user.quills += value;
         save(user);
+    }
+
+    public static void subQuills(int value){
+        User user = json.fromJson(User.class, getUserfile());
+        if(user.quills > 0){
+            user.quills -= value;
+            save(user);
+        }
+    }
+
+    public static void buyItem(int itemId){
+        User user = json.fromJson(User.class, getUserfile());
+        user.itemsBought.add(itemId);
+        save(user);
+    }
+
+    public static void placedItem(int itemId){
+        User user = json.fromJson(User.class, getUserfile());
+        user.itemsPlaced.add(itemId);
+        save(user);
+    }
+
+    public static boolean isItemBought(int itemId){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.itemsBought.contains(itemId,true);
+    }
+
+    public static boolean isItemPlaced(int itemId){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.itemsPlaced.contains(itemId,true);
     }
 
     public static void addBird(int birdId){
@@ -88,6 +116,27 @@ public class User {
     public static long getStartTime(){
         User user = json.fromJson(User.class, getUserfile());
         return user.startTime;
+    }
+
+    public static Integer getFeedCount(int key){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.feed.get(key);
+    }
+
+    public static void addFeedOne(Integer key){
+        User user = json.fromJson(User.class, getUserfile());
+        Integer value = getFeedCount(key) + 1;
+        user.feed.set(key,value);
+        save(user);
+        User.check();
+    }
+
+    public static void subFeedOne(Integer key){
+        User user = json.fromJson(User.class, getUserfile());
+        Integer value = getFeedCount(key) - 1;
+        user.feed.set(key,value);
+        save(user);
+        User.check();
     }
 
 }

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "spriteName": "coin",
+    "x": 270,
+    "y": 100,
+    "name": "Shiny Coin",
+    "description": "A shiny coin.",
+    "price": 5
+  },
+  {
+    "id": 2,
+    "spriteName": "leftovers",
+    "x": 150,
+    "y": 90,
+    "name": "Leftovers",
+    "description": "These leftovers belong in the bin, not the backyard.",
+    "price": 5
+  },
+  {
+    "id": 3,
+    "spriteName": "flowers",
+    "x": 50,
+    "y": 25,
+    "name": "Flowers",
+    "description": "A delightful addition to your garden. ",
+    "price": 50
+  },
+  {
+    "id": 4,
+    "spriteName": "pear",
+    "x": 160,
+    "y": 250,
+    "name": "Fruits",
+    "description": "It's harvest season.",
+    "price": 50
+  },
+  {
+    "id": 5,
+    "spriteName": "lucky_bag",
+    "x": 50,
+    "y": 110,
+    "name": "Lucky Bag",
+    "description": "What does this even do?",
+    "price": 10
+  }
+]

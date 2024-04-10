@@ -1,177 +1,226 @@
 package com.mygdx.game;
 
+import static com.badlogic.gdx.scenes.scene2d.Touchable.disabled;
+import static com.badlogic.gdx.scenes.scene2d.Touchable.enabled;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.assets.AssetManager;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.util.HashMap;
+
 public class Shop implements Screen {
     final SEMain game;
-    OrthographicCamera camera;
     Stage stage;
-    private Skin skin;
-    SpriteBatch batch;
-    Vector3 touchPos;
-    TextureAtlas textureAtlas;
-    private AssetManager assetManager;
+    Skin skin;
+    AssetManager assetManager;
+    FileHandle itemjson;
+    FileHandle userdata;
+    ImageTextButton[] itemList;
+    ImageTextButton[] itemPrice;
+    TextButton[] feedList;
+    ImageTextButton[] feedPrice;
+    Image pearIcon;
+    Image quill;
+    Label quillNum;
+    Integer q;
+    Table headTable;
+    ImageTextButton priceBtn;
 
     public Shop(final SEMain game){ //create object instances
         this.game = game;
-        camera = new OrthographicCamera();
+        itemjson = Item.getItemjson();
+        userdata = User.getUserfile();
         assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
-        stage = new Stage(new FitViewport(450,894,camera));
+        stage = new Stage(new FitViewport(450,854));
         Gdx.input.setInputProcessor(stage);
+        itemList = new ImageTextButton[6];
+        itemPrice = new ImageTextButton[6];
+        feedList = new TextButton[5];
+        feedPrice = new ImageTextButton[5];
+        HashMap<String, TextureRegion> images = Sprites.getImages();
+        pearIcon = new Image(images.get("pear"));
+        quill = new Image(skin,"quill");
+        quillNum = SEGameScreen.getQuillNum();
+        q = User.getQuills();
+
     }
+    public void show() {
+        stage.addActor(SEGameScreen.getQuillCounter());
 
-    public void show() { //edit screen here
-        Color grayscale = new Color(0.2f,0.2f,0.2f,1f);
-        Color colorDefault = new Color(1f, 1f, 1f, 1f);
-
-        //TODO: Fix the alignment of the tables to match those in SEGameScreen.
-        //headUI initiate
-        Table headUI = new Table();
-        headUI.align(Align.topLeft).padLeft(15);
-        headUI.setFillParent(true);
-        stage.addActor(headUI);
-
-        //headUI elements
-        Image img = new Image(skin, "quill");
-        headUI.add(img).padRight(15);
-        Label wallet = new Label(String.valueOf(User.getQuills()), skin, "button");
-        headUI.add(wallet);
-
-
-        //menu initiate
-        Table menu = new Table();
-        //menu.align(Align.center);
-        menu.setFillParent(true);
-        stage.addActor(menu);
-
-        //decoration Table
-        Label decoLabel = new Label("Decorations", skin, "button");
-        menu.add(decoLabel).padBottom(15).row();
-        Table decoTable = new Table();
-
-        Image firImg = new Image(skin, "quill");
-        Image secImg = new Image(skin, "quill");
-        if (User.getQuills() < 50){firImg.setColor(grayscale);}
-        if (User.getQuills() < 80){secImg.setColor(grayscale);}
-        decoTable.add(firImg).size(150,150).padRight(15);
-        decoTable.add(secImg).size(150,150);
-        decoTable.row();
-
-        TextButton fir = new TextButton("50 quills", skin);
-        TextButton sec = new TextButton("80 quills", skin);
-        decoTable.add(fir).width(150).padRight(15);
-        decoTable.add(sec).width(150);
-        menu.add(decoTable).row();
-        decoTable.padBottom(105);
-
-        //birdfeeder Table
-        Label foodLabel = new Label("Bird feeds", skin, "button");
-        menu.add(foodLabel).row();
-
-        Table foodTable = new Table();
-        TextButton thi = new TextButton("Fruit", skin);
-        TextButton fou = new TextButton("Seeds", skin);
-        TextButton fif = new TextButton("Sugar", skin);
-        TextButton six = new TextButton("Worms", skin);
-        foodTable.add(thi).width(150).padRight(15);
-        foodTable.add(fou).width(150);
-        foodTable.row().pad(15,0,15,0);
-        foodTable.add(fif).width(150).padRight(15);
-        foodTable.add(six).width(150);
-        menu.add(foodTable).row();
-        foodTable.padBottom(45);
-
-
-        //This table won't appear in the final game. The purpose of this is to test
-        //the display of items based on the number of quills the user has collected
-        Table temp = new Table();
-        TextButton addQ = new TextButton("+10", skin);
-        TextButton subQ = new TextButton("-10", skin);
-        temp.add(addQ).padRight(15);
-        temp.add(subQ);
-        menu.add(temp).row();
-
-        addQ.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                User.addQuills(10);
-                wallet.setText(String.valueOf(User.getQuills()));
-
-                if (User.getQuills() >= 50){firImg.setColor(colorDefault);}
-                if (User.getQuills() >= 80){secImg.setColor(colorDefault);}
-                stage.act();
-                stage.draw();
-                return true;
-            }
-        });
-
-        subQ.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                User.addQuills(-10);
-                wallet.setText(String.valueOf(User.getQuills()));
-
-                if (User.getQuills() < 50){firImg.setColor(grayscale);}
-                if (User.getQuills() < 80){secImg.setColor(grayscale);}
-                stage.act();
-                stage.draw();
-                return true;
-            }
-        });
+        // main menu
+        headTable = new Table();
+        headTable.setFillParent(true);
+        headTable.add(getItemTable()).growX();
+        headTable.row();
+        headTable.add(getFeedTable()).growX();
+        ScrollPane scrollPane = new ScrollPane(headTable,skin);
+        stage.addActor(headTable);
+        stage.addActor(scrollPane);
 
         //returnButton
         TextButton returnBtn = new TextButton("Return", skin);
-        stage.addActor(returnBtn);
+        returnBtn.setX(50);
         returnBtn.addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Actor actor){
                 game.setScreen(new SEGameScreen(game));
             }
         });
+        stage.addActor(returnBtn);
     }
 
     @Override
-    public void render (float delta) { //render screen here
-        camera.update();
-        Gdx.gl.glClearColor(156/255f, 175/255f, 170/255f, 1);
+    public void render (float delta) {
+        Gdx.gl.glClearColor(0.88f,0.82f,0.75f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        q = User.getQuills();
+        quillNum.setText(String.valueOf(q));
+        for(int i = 1; i < 6; i++){
+            updatePriceBtn(itemPrice[i], i,0);
+        }
+        for(int i = 1; i < 5; i++) {
+            updatePriceBtn(feedPrice[i],i,1);
+        }
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
-    //maintain below
+    private Table getItemTable(){
+        Table decoTable = new Table();
+        Label decoTitle = new Label("Decorations",skin,"button");
+        decoTable.add(decoTitle).colspan(2).center().padBottom(10.0f).row();
+        for(int i = 1; i < 6; i++){
+            Item item = new Item(i);
+            itemList[i] = new ImageTextButton(item.name,skin);
+            Image itemImg = new Image(item.itemImg);
+            if(i == 4) itemImg = pearIcon;
+            itemList[i].add(itemImg);
+            decoTable.add(itemList[i]).growX().pad(0,20.0f,10.0f,10.0f);
+            itemList[i].addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    getDescription(item.name,item.description).show(stage);
+                }
+            });
+
+            priceBtn = new ImageTextButton(String.valueOf(item.price),skin,"price");
+            decoTable.add(priceBtn).pad(0,0,0,10.0f).uniform();
+            decoTable.row();
+
+            int itemId = i;
+            priceBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    User.subQuills(item.price);
+                    User.buyItem(itemId);
+                }
+            });
+            itemPrice[i] = priceBtn;
+        }
+
+        return decoTable;
+    }
+
+    private Table getFeedTable(){
+        Table feedTable = new Table();
+        Label feedTitle = new Label("Feeders",skin,"button");
+        feedTable.add(feedTitle).colspan(2).center().padBottom(10.0f).row();
+        for(int i = 1; i < 5; i++){
+            Feeder feeder = new Feeder(i);
+            feedList[i] = new TextButton(feeder.name,skin,"pixel");
+            feedTable.add(feedList[i]).growX().pad(0,20.0f,10.0f,10.0f);
+            ImageTextButton priceBtn = new ImageTextButton(String.valueOf(feeder.price),skin,"price");
+            feedTable.add(priceBtn).pad(0,0,0,10.0f).uniform();
+            feedTable.row();
+
+            feedList[i].addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    getDescription(feeder.name,feeder.description).show(stage);
+                }
+            });
+
+            int feederId = i;
+            priceBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    User.subQuills(feeder.price);
+                    User.addFeedOne(feederId);
+                }
+            });
+
+            feedPrice[i] = priceBtn;
+        }
+        return feedTable;
+    }
+
+    private void updatePriceBtn(ImageTextButton priceBtn, int id, int type){
+        int price = Integer.parseInt(priceBtn.getText().toString());
+        switch(type) {
+            case 0: // item type
+                if (price > q || User.isItemBought(id)) {
+                    priceBtn.setDisabled(true);
+                    priceBtn.setTouchable(disabled);
+                } else {
+                    priceBtn.setDisabled(false);
+                    priceBtn.setTouchable(enabled);
+                }
+                break;
+            case 1: // feed type
+                if (price > q) {
+                    priceBtn.setDisabled(true);
+                    priceBtn.setTouchable(disabled);
+                } else {
+                    priceBtn.setDisabled(false);
+                    priceBtn.setTouchable(enabled);
+                }
+                break;
+        }
+
+
+    }
+
+
+    private Dialog getDescription(String name, String description){
+        Label desc = new Label(description, skin,"button");
+        desc.setWrap(true);
+        Button close = new Button(skin,"close");
+
+        Dialog descInfo = new Dialog(name,skin);
+        descInfo.getContentTable().add(desc).width(400);
+        descInfo.getButtonTable().add(close).expandX().align(Align.right);
+
+        close.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                descInfo.remove();
+            }
+        });
+
+        return descInfo;
+    }
+
     @Override
-    public void resize(int width, int height) {stage.getViewport().update(width,height,false);}
+    public void resize(int width, int height) {stage.getViewport().update(width,height,true);}
 
     @Override
     public void hide() {
