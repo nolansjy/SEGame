@@ -3,6 +3,7 @@ package com.mygdx.game;
 import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
@@ -16,6 +17,7 @@ public class User {
     public Array<Integer> feed;
     public Integer quills;
     public long startTime;
+    public Integer lastFeed;
 
     public static FileHandle getUserfile(){
         return Gdx.files.local("user.json");
@@ -46,9 +48,9 @@ public class User {
 
         user.birdsFound.add(0);
         user.itemsBought.add(0);
-        user.itemsPlaced.add(0);
-        user.feed.addAll(0,0,0,0,0);
-        user.quills = 0;
+        user.feed.addAll(0,5,0,0,0);
+        user.quills = 100;
+        user.lastFeed = 0;
         user.startTime = TimeUtils.millis();
 
         String txt = json.toJson(user);
@@ -80,20 +82,33 @@ public class User {
         save(user);
     }
 
-    public static void placedItem(int itemId){
+    public static void placeItem(int itemId){
         User user = json.fromJson(User.class, getUserfile());
         user.itemsPlaced.add(itemId);
         save(user);
     }
 
-    public static boolean isItemBought(int itemId){
+    public static void removeItem(int itemId){
         User user = json.fromJson(User.class, getUserfile());
-        return user.itemsBought.contains(itemId,true);
+        user.itemsPlaced.removeValue(itemId,true);
+        save(user);
+    }
+
+    public static boolean isItemBought(int itemId){
+        return getItemsBought().contains(itemId,true);
     }
 
     public static boolean isItemPlaced(int itemId){
-        User user = json.fromJson(User.class, getUserfile());
-        return user.itemsPlaced.contains(itemId,true);
+        return getItemsPlaced().contains(itemId,true);
+    }
+    public static Array<Integer> getItemsBought(){
+        User user = json.fromJson(User.class,getUserfile());
+        return user.itemsBought;
+    }
+
+    public static Array<Integer> getItemsPlaced(){
+        User user = json.fromJson(User.class,getUserfile());
+        return user.itemsPlaced;
     }
 
     public static void addBird(int birdId){
@@ -123,12 +138,23 @@ public class User {
         return user.feed.get(key);
     }
 
+    public static Integer getLastFeed(){
+        User user = json.fromJson(User.class, getUserfile());
+        return user.lastFeed;
+    }
+
+    public static void setLastFeed(int feedId){
+        User user = json.fromJson(User.class, getUserfile());
+        user.lastFeed = feedId;
+        saveStartTime();
+        save(user);
+    }
+
     public static void addFeedOne(Integer key){
         User user = json.fromJson(User.class, getUserfile());
         Integer value = getFeedCount(key) + 1;
         user.feed.set(key,value);
         save(user);
-        User.check();
     }
 
     public static void subFeedOne(Integer key){
@@ -136,7 +162,6 @@ public class User {
         Integer value = getFeedCount(key) - 1;
         user.feed.set(key,value);
         save(user);
-        User.check();
     }
 
 }

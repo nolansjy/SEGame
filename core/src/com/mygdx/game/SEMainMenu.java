@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -22,53 +22,86 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
     private final Skin skin;
     private final Stage stage;
     final SEMain game;
-    OrthographicCamera camera;
-    public static float master_vol;
-    public static boolean skip_menu;
     public Preferences prefs;
     AssetManager assetManager;
-    public SEMainMenu(final SEMain game){ // used in place of create() method
+    Label loading;
+    Table mainMenu;
+    Music bgm;
+    Slider music;
+    public SEMainMenu(final SEMain game){
         this.game = game;
-        camera = new OrthographicCamera();
         assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
-        stage = new Stage(new FitViewport(450,854,camera));
+        bgm = assetManager.get("dova20405.mp3",Music.class);
+        stage = new Stage(new FitViewport(450,854));
         Gdx.input.setInputProcessor(stage);
         prefs = Gdx.app.getPreferences("gamePrefs");
+        bgm.setLooping(true);
+        bgm.setVolume(prefs.getFloat("bgm",1));
+        game.loadPostStart();
     }
 
     @Override
-    public void show() { // menu layout goes here
-        if (prefs.getBoolean("skip_menu")){
-            this.game.setScreen(new SEGameScreen(game));
-        }
-        Table menu = new Table();
-        menu.setFillParent(true);
-        stage.addActor(menu);
+    public void show() {
+        bgm.play();
+        mainMenu = getMainMenu();
+        loading = new Label("Loading...",skin,"button");
+        mainMenu.add(loading).fillX();
+        stage.addActor(mainMenu);
+    }
 
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0.95f,0.97f,1,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(assetManager.update()){
+            loading.setText("Loading...done!");
+        }
+        stage.act();
+        stage.draw();
+    }
+
+    private Table getMainMenu(){
+        mainMenu = new Table();
+        mainMenu.setFillParent(true);
+        Label title = new Label("Let's Bird!",skin,"title");
         TextButton playGame = new TextButton("Play Game", skin);
         TextButton settings = new TextButton("Settings",skin);
         TextButton reset = new TextButton("Reset",skin);
-        menu.add(playGame).fillX().uniformX();
-        menu.row().pad(10, 0, 10, 0);
-        menu.add(settings).fillX().uniformX();
-        menu.row().pad(10, 0, 10, 0);
-        menu.add(reset).fillX().uniformX();
+        mainMenu.add(title).fillX().pad(0,0,10,0).row();
+        mainMenu.add(playGame).fillX();
+        mainMenu.row().pad(10, 0, 10, 0);
+        mainMenu.add(settings).fillX();
+        mainMenu.row().pad(10, 0, 10, 0);
+        mainMenu.add(reset).fillX();
+        mainMenu.row().pad(40, 0, 10, 0);
 
+        Label musicLabel = new Label("Music",skin,"button");
+        music = new Slider(0,1,0.1f,false,skin);
+        music.setValue(prefs.getFloat("bgm",1));
 
-
-        Slider volume = new Slider(0,100,10,false,skin);
-        CheckBox disableStart = new CheckBox("Disable start menu",skin);
-        disableStart.getLabel().setColor(skin.getColor("black"));
+        Label soundLabel = new Label("Sound",skin,"button");
+        Slider sound = new Slider(0,1,0.1f,false,skin);
+        sound.setValue(prefs.getFloat("sound",1));
         Button close = new Button(skin,"close");
-        volume.setValue(prefs.getFloat("master_vol"));
+
+        music.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                prefs.putFloat("bgm", music.getValue());
+                prefs.flush();
+                bgm.setVolume(prefs.getFloat("bgm"));
+            }
+        });
 
         playGame.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                prefs.putFloat("master_vol",volume.getValue());
+                prefs.putFloat("sound",sound.getValue());
                 prefs.flush();
-                game.setScreen(new SEGameScreen(game));
+                if(assetManager.isFinished()){
+                    game.setScreen(new SEGameScreen(game));
+                }
             }
         });
 
@@ -76,12 +109,11 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Dialog settingsPopup = new Dialog("Settings",skin);
-                //settingsPopup.button(close);
-                //settingsPopup.setDebug(true);
                 settingsPopup.button(close);
-                settingsPopup.getContentTable().add(volume);
-                settingsPopup.getButtonTable().add(disableStart);
-                //settingsPopup.add(String.valueOf(prefs.getFloat("master_vol")));
+                settingsPopup.getContentTable().add(musicLabel);
+                settingsPopup.getContentTable().add(music).row();
+                settingsPopup.getContentTable().add(soundLabel);
+                settingsPopup.getContentTable().add(sound);
                 settingsPopup.pad(40,20,10,20);
                 settingsPopup.show(stage);
             }
@@ -94,26 +126,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
             }
         });
 
-        disableStart.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                prefs.putBoolean("skip_menu",disableStart.isChecked());
-                prefs.flush();
-                if (disableStart.isChecked()){
-                    System.out.println("Disabled Start");
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void render(float delta) {
-        camera.update();
-        Gdx.gl.glClearColor(.9f, .9f, .9f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
-        stage.draw();
+        return mainMenu;
     }
 
     @Override
@@ -138,7 +151,6 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
 
     @Override
     public void dispose() {
-        assetManager.clear();
         stage.dispose();
 
     }

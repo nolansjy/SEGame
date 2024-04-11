@@ -4,16 +4,13 @@ package com.mygdx.game;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,45 +21,42 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import java.util.HashMap;
 
 public class SEGameScreen implements Screen {
+	private static Table quills;
+	private static Label quillNum;
 	final SEMain game;
-	Music rainMusic;
-	OrthographicCamera camera;
+	Music bgm;
 	Stage stage;
-	SpriteBatch batch;
 	TextureAtlas textureAtlas;
 	Texture background;
-	Skin skin;
-	AssetManager assetManager;
+	static Skin skin;
+	static AssetManager assetManager;
 	Preferences prefs;
 	Integer q;
-	Label quillNum;
 	Table gardenUi;
-	Table quills;
 	TextureRegion feeder;
+	Array<Item> itemsPlaced;
 	long startTime;
 	long elapsedTime;
 	Array<Integer> birdPool;
+	Array<Integer> itemRate;
+	Integer randBirdId;
+
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
 		assetManager = game.getAssetManager();
-		rainMusic = assetManager.get("rain.mp3");
+		bgm = assetManager.get("dova20405.mp3");
 		textureAtlas = assetManager.get("sprites.atlas");
 		background = new Texture(Gdx.files.internal("background.png"));
 		skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
 
 		Preferences pref = Gdx.app.getPreferences("gamePrefs");
-		rainMusic.setLooping(true);
-		//rainMusic.setVolume(SEMainMenu.master_vol/100);
-		rainMusic.setVolume(pref.getFloat("master_vol")/100);
+		bgm.setLooping(true);
+		bgm.setVolume(pref.getFloat("bgm"));
 
-		batch = new SpriteBatch();
 		stage = new Stage(new FillViewport(450,854));
 		Gdx.input.setInputProcessor(stage);
 
@@ -71,15 +65,102 @@ public class SEGameScreen implements Screen {
 		Sprites.load(textureAtlas);
 		feeder = textureAtlas.findRegion("feeder_empty");
 
+		itemsPlaced = new Array<>();
+		itemRate = Item.getItemRate();
+	}
+
+	private Array<Integer> getBirdPool(){
 		birdPool = new Array<>();
-		birdPool.addAll(1, 2, 3, 4, 5);
+		birdPool.add(0);
+		Feeder.addFeedRate(User.getLastFeed(),birdPool);
+		return birdPool;
+	}
+
+	public static AssetManager getAssetManager(){
+		return assetManager;
 	}
 
 	@Override
 	public void show(){
-		rainMusic.play();
-		//TODO: method to randomly spawn birds
+		bgm.play();
+		startTime = User.getStartTime(); // in milliseconds
+		elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000; // in seconds
 
+		for(int i = 0; i < User.getItemsPlaced().size; i++){
+			Integer itemId = User.getItemsPlaced().get(i);
+			itemsPlaced.add(new Item(itemId));
+			stage.addActor(itemsPlaced.get(i));
+		}
+
+		if(elapsedTime >= 10 && !getBirdPool().contains(0,false)){ // 10 seconds
+			randBirdId = getBirdPool().random();
+			if(!itemRate.contains(randBirdId,false)) stage.addActor(new Bird(randBirdId));
+			User.saveStartTime();
+		}
+
+		if(elapsedTime >= 10 && itemRate.notEmpty()){
+			for(int i = 0; i < itemRate.size; i++){
+				Integer birdId = itemRate.get(i);
+				if(!birdId.equals(randBirdId)){
+					stage.addActor(new Bird(birdId));
+				}
+			}
+		}
+
+		if(elapsedTime >= 60 && !User.getLastFeed().equals(0)){
+			User.setLastFeed(0);
+		}
+
+		stage.addActor(new Feeder(User.getLastFeed()));
+
+
+		stage.addActor(getUI());
+		stage.addActor(getQuills());
+	}
+
+
+	@Override
+	public void render (float delta) {
+		delta = Gdx.graphics.getDeltaTime();
+		Gdx.gl.glClearColor(0.9f, 0.9f, 1, 0.5f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		q=User.getQuills();
+		quillNum.setText(String.valueOf(q));
+		for(int i = 0; i < itemsPlaced.size; i++){
+			if(!User.isItemPlaced(itemsPlaced.get(i).id)) itemsPlaced.get(i).remove();
+		}
+		stage.act(delta);
+		stage.getBatch().begin();
+		stage.getBatch().draw(background,0,0,450,854);
+		stage.getBatch().end();
+		stage.draw();
+	}
+
+	public static Table getQuillCounter(){
+		return quills;
+	}
+
+	public static Label getQuillNum(){
+		return quillNum;
+	}
+
+	private Table getQuills(){
+		quills = new Table();
+		quills.padLeft(35.0f);
+		quills.padTop(15.0f);
+		quills.align(Align.topLeft);
+		quills.setFillParent(true);
+
+		Image quill = new Image(skin, "quill");
+		quills.add(quill).padRight(10.0f);
+		q = User.getQuills();
+		quillNum = new Label(String.valueOf(q), skin, "button");
+		quillNum.setColor(skin.getColor("window"));
+		quills.add(quillNum);
+		return quills;
+	}
+
+	private Table getUI(){
 		gardenUi = new Table();
 		gardenUi.padRight(35.0f);
 		gardenUi.padBottom(15.0f);
@@ -98,29 +179,9 @@ public class SEGameScreen implements Screen {
 		Button home = new Button(skin, "home");
 		gardenUi.add(home);
 
-		stage.addActor(gardenUi);
-
-		quills = new Table();
-		quills.padLeft(35.0f);
-		quills.padTop(15.0f);
-		quills.align(Align.topLeft);
-		quills.setFillParent(true);
-
-		Image quill = new Image(skin, "quill");
-		quills.add(quill).padRight(10.0f);
-
-		q = User.getQuills();
-		quillNum = new Label(String.valueOf(q), skin, "button");
-		quillNum.setColor(skin.getColor("window"));
-		quills.add(quillNum);
-
-		stage.addActor(quills);
-
 		home.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				prefs.putBoolean("skip_menu",false);
-				prefs.flush();
 				game.setScreen(new SEMainMenu(game));
 			}
 		});
@@ -138,30 +199,14 @@ public class SEGameScreen implements Screen {
 				game.setScreen(new Shop(game));
 			}
 		});
-	}
-
-
-	@Override
-	public void render (float delta) {
-		delta = Gdx.graphics.getDeltaTime();
-		Gdx.gl.glClearColor(0.9f, 0.9f, 1, 0.5f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		q=User.getQuills();
-		quillNum.setText(String.valueOf(q));
-		startTime = User.getStartTime(); // in milliseconds
-		elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000; // in seconds
-		if(elapsedTime==10 && birdPool.size > 0){ // 10 seconds
-			Integer birdId = birdPool.random();
-			stage.addActor(new Bird(birdId));
-			birdPool.removeValue(birdId,true);
-			User.saveStartTime();
-		}
-		stage.act(delta);
-		stage.getBatch().begin();
-		stage.getBatch().draw(background,0,0,450,854);
-		stage.getBatch().draw(feeder,stage.getWidth()/3,125,feeder.getRegionWidth(),feeder.getRegionHeight());
-		stage.getBatch().end();
-		stage.draw();
+		bag.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Inventory bag = new Inventory(game,stage);
+				bag.getInventory().show(stage);
+			}
+		});
+		return gardenUi;
 	}
 
 	@Override
@@ -184,9 +229,6 @@ public class SEGameScreen implements Screen {
 
 	@Override
 	public void dispose () {
-		assetManager.clear();
-		batch.dispose();
-		Sprites.dispose();
 		stage.clear();
 	}
 

@@ -31,8 +31,6 @@ public class Shop implements Screen {
     Stage stage;
     Skin skin;
     AssetManager assetManager;
-    FileHandle itemjson;
-    FileHandle userdata;
     ImageTextButton[] itemList;
     ImageTextButton[] itemPrice;
     TextButton[] feedList;
@@ -46,8 +44,6 @@ public class Shop implements Screen {
 
     public Shop(final SEMain game){ //create object instances
         this.game = game;
-        itemjson = Item.getItemjson();
-        userdata = User.getUserfile();
         assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
         stage = new Stage(new FitViewport(450,854));
@@ -236,8 +232,7 @@ public class Shop implements Screen {
 
     @Override
     public void dispose () {
-        skin.dispose();
-        stage.dispose();
+        stage.clear();
     }
 
 }

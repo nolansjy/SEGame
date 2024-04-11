@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -24,6 +25,7 @@ public class Item extends Actor {
     Integer price;
     TextureRegion itemImg;
     Skin skin;
+    static Array<Integer> itemRate;
 
     public Item(int itemId){
         FileHandle itemdata = Gdx.files.internal("items.json");
@@ -55,7 +57,21 @@ public class Item extends Actor {
         setBounds(getX(),getY(),getWidth(),getHeight());
     }
 
+    public static Array<Integer> getItemRate(){
+        Array<Integer> itemsPlaced = User.getItemsPlaced();
+        itemRate = new Array<>();
+        if(itemsPlaced.notEmpty()){
+            for(int i = 0; i < itemsPlaced.size; i++){
+                itemRate.add(itemsPlaced.get(i));
+            }
+        }
+
+        return itemRate;
+    }
+
     public static FileHandle getItemjson(){return Gdx.files.internal("items.json");}
+
+
 
 
     @Override
@@ -80,4 +96,6 @@ public class Item extends Actor {
         }
         return data;
     }
+
+
 }

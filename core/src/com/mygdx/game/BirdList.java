@@ -148,7 +148,6 @@ public class BirdList implements Screen {
 
     @Override
     public void dispose() {
-        assetManager.clear();
-        stage.dispose();
+        stage.clear();
     }
 }

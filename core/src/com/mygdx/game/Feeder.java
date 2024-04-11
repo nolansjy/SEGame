@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
@@ -26,16 +27,15 @@ public class Feeder extends Actor {
     Dialog feedMenu;
     Skin skin;
     TextButton[] feedSelect;
-    Boolean isEmpty;
     String name;
     String description;
     Integer price;
+    Integer type;
 
     public Feeder(int feederId) {
         FileHandle feederdata = Gdx.files.internal("feeder.json");
         HashMap<String, TextureRegion> images = Sprites.getImages();
         skin = new Skin(Gdx.files.internal("earthskin-ui/earthskin.json"));
-        isEmpty = feederId == 0;
 
         JsonReader jsonRead = new JsonReader();
         JsonValue feederjson = jsonRead.parse(feederdata);
@@ -44,6 +44,7 @@ public class Feeder extends Actor {
         name = feeder.getString("name");
         description = feeder.getString("description");
         price = feeder.getInt("price");
+        type = feeder.getInt("type");
 
         setX(125);
         setY(130);
@@ -58,6 +59,30 @@ public class Feeder extends Actor {
             }
         });
 
+    }
+
+    public static void addFeedRate(int feedId, Array<Integer> birdPool){
+        birdPool.removeValue(0,true);
+        switch(feedId){
+            case 0:
+                birdPool.add(0);
+                break;
+            case 1:
+                birdPool.addAll(Bird.getDefaultPool());
+                break;
+            case 2:
+                birdPool.addAll(1,2,4,5);
+                birdPool.addAll(3,3,3,3,3,3);
+                break;
+            case 3:
+                birdPool.addAll(1,2,3,4);
+                birdPool.addAll(5,5,5,5,5,5);
+                break;
+            case 4:
+                birdPool.addAll(1,2,3,5);
+                birdPool.addAll(4,4,4,4,4,4);
+                break;
+        }
     }
 
     @Override
@@ -105,12 +130,14 @@ public class Feeder extends Actor {
             feedSelect[feedId].addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    if (feedCount > 0) { //TODO: isEmpty condition
+                    if (feedCount > 0) {
                         User.subFeedOne(feedId);
                         feedSelect[feedId].setText(
                                 String.format(Locale.getDefault(),
                                         "%s x%d",feeder.name,getFeedCount(feedId)));
                         getStage().addActor(new Feeder(feedId));
+                        User.setLastFeed(feedId);
+                        System.out.println(User.getLastFeed());
                         addAction(Actions.removeActor());
                         feedMenu.remove();
                     }
