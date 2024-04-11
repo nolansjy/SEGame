@@ -3,7 +3,6 @@ package com.mygdx.game;
 import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
