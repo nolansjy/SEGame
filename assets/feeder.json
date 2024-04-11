@@ -4,34 +4,39 @@
   "spriteName": "feeder_empty",
   "name": null,
   "description": null,
-  "price": 0
+  "price": 0,
+  "type": -1
 },
 {
   "id": 1,
   "spriteName": "feeder_seed",
   "name": "Sunflower Seeds",
   "description": "Attracts all kinds of backyard birds.",
-  "price": 10
+  "price": 10,
+  "type": 0
 },
 {
   "id": 2,
   "spriteName": "feeder_sugar",
   "name": "Sugar Water",
   "description": "Attracts nectar drinkers",
-  "price": 10
+  "price": 10,
+  "type": 1
 },
 {
   "id": 3,
   "spriteName": "feeder_worm",
   "name": "Mealworms",
   "description": "Attracts meat eaters",
-  "price": 30
+  "price": 30,
+  "type": 3
 },
 {
   "id": 4,
   "spriteName": "feeder_fruit",
   "name": "Fruit Mix",
   "description": "Attracts fruit eaters",
-  "price": 20
+  "price": 20,
+  "type": 2
 }
 ]

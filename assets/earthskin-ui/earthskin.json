@@ -323,10 +323,10 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
 	"default": {
-		"checkboxOn": "checkbox-pressed-c",
-		"checkboxOff": "checkbox-c",
+		"checkboxOn": "checkbox-p",
+		"checkboxOff": "checkbox-pressed-p",
 		"font": "button",
-		"fontColor": "color"
+		"fontColor": "pressed"
 	},
 	"radio": {
 		"checkboxOn": "radio-pressed-c",
@@ -380,6 +380,16 @@
 		"up": "button-h",
 		"down": "button-c",
 		"disabled": "button-c"
+	},
+	"checked": {
+		"font": "pixel",
+		"fontColor": "pressed",
+		"disabledFontColor": "black",
+		"checkedFontColor": "black",
+		"up": "button-h",
+		"down": "button-c",
+		"disabled": "button-pressed-c",
+		"checked": "button-pressed-c"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
@@ -393,7 +403,7 @@
 	},
 	"title": {
 		"font": "title",
-		"fontColor": "black"
+		"fontColor": "selection"
 	},
 	"tag": {
 		"font": "button",
