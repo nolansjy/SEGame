@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.Gdx;
@@ -37,25 +36,24 @@ public class SEGameScreen implements Screen {
 	Preferences prefs;
 	Integer q;
 	Table gardenUi;
-	TextureRegion feeder;
 	Array<Item> itemsPlaced;
 	long startTime;
 	long elapsedTime;
 	Array<Integer> birdPool;
 	Array<Integer> itemRate;
-	Integer randBirdId;
+	private Integer randBirdId;
 
 	public SEGameScreen(final SEMain game) {
 		this.game = game;
 		assetManager = game.getAssetManager();
-		bgm = assetManager.get("dova20405.mp3");
+		bgm = assetManager.get("dova20405.mp3",Music.class);
 		textureAtlas = assetManager.get("sprites.atlas");
 		background = new Texture(Gdx.files.internal("background.png"));
 		skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);
 
 		Preferences pref = Gdx.app.getPreferences("gamePrefs");
 		bgm.setLooping(true);
-		bgm.setVolume(pref.getFloat("bgm"));
+		bgm.setVolume(pref.getFloat("bgm",1));
 
 		stage = new Stage(new FillViewport(450,854));
 		Gdx.input.setInputProcessor(stage);
@@ -63,7 +61,6 @@ public class SEGameScreen implements Screen {
 		prefs = Gdx.app.getPreferences("gamePrefs");
 
 		Sprites.load(textureAtlas);
-		feeder = textureAtlas.findRegion("feeder_empty");
 
 		itemsPlaced = new Array<>();
 		itemRate = Item.getItemRate();

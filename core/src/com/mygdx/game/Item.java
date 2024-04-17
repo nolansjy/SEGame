@@ -69,9 +69,6 @@ public class Item extends Actor {
         return itemRate;
     }
 
-    public static FileHandle getItemjson(){return Gdx.files.internal("items.json");}
-
-
 
 
     @Override

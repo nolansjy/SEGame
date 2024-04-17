@@ -19,15 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
-    private final Skin skin;
-    private final Stage stage;
+    Skin skin;
+    Stage stage;
     final SEMain game;
-    public Preferences prefs;
+    Preferences prefs;
     AssetManager assetManager;
-    Label loading;
-    Table mainMenu;
+    private Label loading;
+    private Table mainMenu;
     Music bgm;
-    Slider music;
     public SEMainMenu(final SEMain game){
         this.game = game;
         assetManager = game.getAssetManager();
@@ -77,7 +76,7 @@ public class SEMainMenu implements Screen{ // used instead of ApplicationAdapter
         mainMenu.row().pad(40, 0, 10, 0);
 
         Label musicLabel = new Label("Music",skin,"button");
-        music = new Slider(0,1,0.1f,false,skin);
+        Slider music = new Slider(0,1,0.1f,false,skin);
         music.setValue(prefs.getFloat("bgm",1));
 
         Label soundLabel = new Label("Sound",skin,"button");

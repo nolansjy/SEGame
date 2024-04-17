@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class BirdList implements Screen {
     final SEMain game;
-    FileHandle birdjson;
     FileHandle userfile;
     AssetManager assetManager;
     Skin skin;
@@ -31,7 +30,6 @@ public class BirdList implements Screen {
     ImageTextButton[] birdList;
     public BirdList(final SEMain game){
         this.game = game;
-        birdjson = Bird.getBirdjson();
         userfile = User.getUserfile();
         assetManager = game.getAssetManager();
         skin = assetManager.get("earthskin-ui/earthskin.json",Skin.class);

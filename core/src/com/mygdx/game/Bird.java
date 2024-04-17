@@ -83,7 +83,7 @@ public class Bird extends Actor {
         });
     }
 
-    public static Array<Integer> getBirdBaseRate(int birdId){
+    private static Array<Integer> getBirdBaseRate(int birdId){
         birdRate = new Array<>();
         switch(birdId){
             case 1:
@@ -111,7 +111,6 @@ public class Bird extends Actor {
         }
         return defaultRate;
     }
-    public static FileHandle getBirdjson(){return Gdx.files.internal("birds.json");}
 
     @Override
     public void draw(Batch batch, float parentAlpha){

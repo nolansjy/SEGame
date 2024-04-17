@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class SEMain extends Game{
     SkinLoader.SkinParameter skinParameter;
-    public AssetManager assetManager;
+    AssetManager assetManager;
 
     public void create(){
         assetManager = new AssetManager();
@@ -27,7 +27,7 @@ public class SEMain extends Game{
         return assetManager;
     }
 
-    public void loadStart(){
+    private void loadStart(){
         skinParameter = new SkinLoader.SkinParameter("earthskin-ui/earthskin.atlas");
         assetManager.load("earthskin-ui/earthskin.json",Skin.class,skinParameter);
         assetManager.load("dova20405.mp3", Music.class);
